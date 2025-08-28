@@ -1,4 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("solidity-coverage");
+require("hardhat-gas-reporter");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -12,5 +14,16 @@ module.exports = {
         },
       },
     ],
+  },
+  defaultNetwork: "hardhat",
+  networks: {
+    hardhat: {
+      forking: {
+        enabled: true,
+        url: "https://rpc.mantle.xyz",
+        blockNumber: 84117183,
+      },
+    },
+    localhost: { url: "http://127.0.0.1:8545/" },
   },
 };

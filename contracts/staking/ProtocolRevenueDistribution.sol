@@ -16,75 +16,64 @@ contract ProtocolRevenueDistribution is OwnableUpgradable {
 
   uint256 public constant VERSION = 0x2;
 
-  ILendingPool internal lendingPool;
-  IOdosRouter internal router;
-  address internal lendToken;
+  ILendingPool public lendingPool;
+  address public router;
+  address public distributor;
 
-  mapping(address => bytes) internal paths; // asset => odos path to get LEND
+  bool public initializedAddresses;
 
+  event Distributed();
+  event InitAddresses(address lendingPool, address router);
+  event SetDistributor(address distributor);
   event Withdraw(address token, uint256 amount);
-  event SwapAll();
-  event InitAddresses(address lendingPool, address router, address lendToken);
  
   /* ========== INITIALIZER ========== */
   function initialize(address owner) external initializer {
     _transferOwnership(owner);
   }
 
-  function initAddresses(address _lendingPool, address _router, address _lendToken) external onlyOwner {
+  function initAddresses(address _lendingPool, address _router) external {
+    require(!initializedAddresses, 'Already initialized');
+
     lendingPool = ILendingPool(_lendingPool);
-    router = IOdosRouter(_router);
-    lendToken = _lendToken;
+    router = _router;
 
-    emit InitAddresses(_lendingPool, _router, _lendToken);
+    initializedAddresses = true;
+
+    emit InitAddresses(_lendingPool, _router);
   }
 
-  function addPaths(address[] memory _tokens, bytes[] memory _paths) external onlyOwner {
-    require(_tokens.length == _paths.length, 'Length mismatch');
+  function setDistributor(address _distributor) external onlyOwner {
+    distributor = _distributor;
 
-    uint256 _length = _tokens.length;
-    for (uint256 i = 0; i < _length; i++) {
-      paths[_tokens[i]] = _paths[i];
-    }
+    emit SetDistributor(_distributor);
   }
 
-  function swapAll() external {    
-    address[] memory _reserves = lendingPool.getReservesList();
-    uint256 _length = _reserves.length;
+  function distribute(address[] calldata _aTokens, bytes[] calldata _swapPaths) external { 
+    require(msg.sender == distributor, 'Unauthorized caller');
+    uint256 _length = _aTokens.length;
+    require(_length == _swapPaths.length, 'Length mismatch');
 
-    IOdosRouter.SwapTokenInfo memory _tokenInfo;
     uint256 _balance;
     address _underlyingAsset;
 
     for (uint256 i = 0; i < _length; i++) {
-      _balance = IERC20(_reserves[i]).balanceOf(address(this));
-      if (_balance > 0) {
-        _underlyingAsset = IAToken(_reserves[i]).UNDERLYING_ASSET_ADDRESS();
-        ILendingPool(lendingPool).withdraw(_underlyingAsset, _balance, address(this));
+      _balance = IERC20(_aTokens[i]).balanceOf(address(this));
+      _underlyingAsset = IAToken(_aTokens[i]).UNDERLYING_ASSET_ADDRESS();
+      lendingPool.withdraw(_underlyingAsset, _balance, address(this));
 
-        IERC20(_underlyingAsset).safeTransfer(owner(), _balance / 2); // half to the owner // FIXME: add receiver
-        _balance = IERC20(_reserves[i]).balanceOf(address(this)); // another half to buyback LEND
+      // Transfer half balance to the owner
+      uint256 halfBalance = _balance / 2;
+      IERC20(_underlyingAsset).safeTransfer(owner(), halfBalance); // half to the owner
 
-        _tokenInfo = IOdosRouter.SwapTokenInfo({
-          inputToken: _underlyingAsset,
-          inputAmount: _balance,
-          inputReceiver: address(this),
-          outputToken: lendToken,
-          outputQuote: 0,
-          outputMin: 0,
-          outputReceiver: address(this) // FIXME: define the receiver
-        });
+      // Use the remaining half for buyback LEND
+      IERC20(_underlyingAsset).safeApprove(router, _balance - halfBalance);
 
-        router.swap(
-          _tokenInfo,
-          paths[_underlyingAsset],
-          address(this),
-          0
-        );
-      }
+      (bool success, ) = router.call{value: 0}(_swapPaths[i]);
+      require(success, "Odos swapCompact failed");
     }
 
-    emit SwapAll();
+    emit Distributed();
   }
 
   function withdraw(address token, uint256 amount) external onlyOwner {
