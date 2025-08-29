@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "compile": "yarn hardhat clean && yarn hardhat compile",
-    "deploy:mantle": "yarn hardhat run scripts/deploy-vesting.js --network mantle"
+    "deploy:mantle": "yarn hardhat run scripts/deploy-vesting.js --network mantle",
+    "create-vesting:mantle": "yarn hardhat run scripts/create-vesting-schedules.js --network mantle"
   },
   "repository": {
     "type": "git",

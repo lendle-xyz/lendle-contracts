@@ -1,0 +1,60 @@
+{
+  "vestingSchedules": [
+    {
+      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "startTime": 1756458000,
+      "cliff": 0,
+      "duration": 17888400,
+      "slicePeriodSeconds": 1296000,
+      "revocable": false,
+      "amount": "424395910000000000000000",
+      "description": "Crys"
+    },
+    {
+      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "startTime": 1756458000,
+      "cliff": 0,
+      "duration": 23673600,
+      "slicePeriodSeconds": 1296000,
+      "revocable": false,
+      "amount": "187355710000000000000000",
+      "description": "Erich"
+    },
+    {
+      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "startTime": 1756458000,
+      "cliff": 0,
+      "duration": 23673600,
+      "slicePeriodSeconds": 1296000,
+      "revocable": false,
+      "amount": "187355710000000000000000",
+      "description": "Ivan"
+    },
+    {
+      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "startTime": 1756458000,
+      "cliff": 0,
+      "duration": 23673600,
+      "slicePeriodSeconds": 1296000,
+      "revocable": false,
+      "amount": "187355710000000000000000",
+      "description": "Oleg"
+    },
+    {
+      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "startTime": 1756458000,
+      "cliff": 0,
+      "duration": 48646800,
+      "slicePeriodSeconds": 1296000,
+      "revocable": false,
+      "amount": "385300920000000000000000",
+      "description": "Alex"
+    }
+  ],
+  "config": {
+    "vestingContractAddress": "0x979B89bBcBD1d858Cfe82bE47D9E78a14a7004E1",
+    "tokenAddress": "0x25356aeca4210ef7553140edb9b8026089e49396",
+    "tokenDecimals": 18,
+    "network": "mantle"
+  }
+}
