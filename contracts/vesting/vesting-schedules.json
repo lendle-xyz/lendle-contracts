@@ -1,53 +1,43 @@
 {
   "vestingSchedules": [
     {
-      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "beneficiary": "0xad467789ef90e52d4b136e308304bcad2609c9ba",
       "startTime": 1756458000,
       "cliff": 0,
       "duration": 17888400,
       "slicePeriodSeconds": 1296000,
-      "revocable": false,
-      "amount": "424395910000000000000000",
+      "revocable": true,
+      "amount": "416051950000000000000000",
       "description": "Crys"
     },
     {
-      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "beneficiary": "0xaaDE736C67b4355C3E5690230DbB010c01535ef1",
       "startTime": 1756458000,
       "cliff": 0,
       "duration": 23673600,
       "slicePeriodSeconds": 1296000,
-      "revocable": false,
-      "amount": "187355710000000000000000",
-      "description": "Erich"
-    },
-    {
-      "beneficiary": "0x0000000000000000000000000000000000000000",
-      "startTime": 1756458000,
-      "cliff": 0,
-      "duration": 23673600,
-      "slicePeriodSeconds": 1296000,
-      "revocable": false,
-      "amount": "187355710000000000000000",
+      "revocable": true,
+      "amount": "184574390000000000000000",
       "description": "Ivan"
     },
     {
-      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "beneficiary": "0xC74704E0f5b9B11eAd070B6553d3C59d36E8F83b",
       "startTime": 1756458000,
       "cliff": 0,
       "duration": 23673600,
       "slicePeriodSeconds": 1296000,
-      "revocable": false,
-      "amount": "187355710000000000000000",
+      "revocable": true,
+      "amount": "184574390000000000000000",
       "description": "Oleg"
     },
     {
-      "beneficiary": "0x0000000000000000000000000000000000000000",
+      "beneficiary": "0xa9F4290AD0bcF096B518caDA392d6f072a84bF93",
       "startTime": 1756458000,
       "cliff": 0,
       "duration": 48646800,
       "slicePeriodSeconds": 1296000,
-      "revocable": false,
-      "amount": "385300920000000000000000",
+      "revocable": true,
+      "amount": "382519600000000000000000",
       "description": "Alex"
     }
   ],
